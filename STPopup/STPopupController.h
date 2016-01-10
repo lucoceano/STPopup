@@ -10,26 +10,32 @@
 #import <STPopup/STPopupNavigationBar.h>
 
 typedef NS_ENUM(NSUInteger, STPopupStyle) {
-    /**
-     Popup will be vertically and horizontally centered.
-     */
-    STPopupStyleFormSheet,
-    /**
-     Popup will be horizontally centered and sticked to bottom.
-     */
-    STPopupStyleBottomSheet
+	/**
+	 Popup will be vertically and horizontally centered.
+	 */
+	STPopupStyleFormSheet,
+	/**
+	 Popup will be vertically and horizontally centered.
+	 With navigation commands outside the view
+	 */
+	STPopupStyleFormSheetOuterNavigation,
+	/**
+	 Popup will be horizontally centered and sticked to bottom.
+	 */
+	STPopupStyleBottomSheet
 };
 
 typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
-    /**
-     Slide from bottom to center.
-     */
-    STPopupTransitionStyleSlideVertical,
-    /**
-     Fade-in in center from transparent to opaque.
-     */
-    STPopupTransitionStyleFade
+	/**
+	 Slide from bottom to center.
+	 */
+	STPopupTransitionStyleSlideVertical,
+	/**
+	 Fade-in in center from transparent to opaque.
+	 */
+	STPopupTransitionStyleFade
 };
+
 
 @interface STPopupController : NSObject
 
@@ -72,6 +78,22 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
  By default its background color is set to white and clipsToBounds is set to YES.
  */
 @property (nonatomic, strong, readonly) UIView *containerView;
+
+/**
+ If setted is the distance from the top that the popup view will be presented
+ Default is to 0, making the popup being displayed in the center
+ */
+@property (nonatomic) float positionY;
+
+/**
+ Back image for style Outer Navigation
+ */
+@property(nonatomic) UIImage * backImage;
+
+/**
+ Back image for style Outer Navigation
+ */
+@property(nonatomic) UIImage * closeImage;
 
 /**
  Indicates if the popup is current presented.

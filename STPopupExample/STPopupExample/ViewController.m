@@ -55,11 +55,15 @@
             break;
         case 4: {
             STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[PopupViewController1 new]];
-            popupController.containerView.layer.cornerRadius = 4;
+			popupController.positionY = self.topLayoutGuide.length;
+			popupController.containerView.layer.cornerRadius = 4;
+			popupController.backImage = [UIImage imageNamed:@"back"];
+			popupController.closeImage = [UIImage imageNamed:@"delete"];
+			popupController.navigationBarHidden = YES;
+			popupController.style = STPopupStyleFormSheetOuterNavigation;
             if (NSClassFromString(@"UIBlurEffect")) {
                 UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
                 popupController.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-                popupController.backgroundView.alpha = 0.8; // This is not necessary
             }
             [popupController presentInViewController:self];
         }
