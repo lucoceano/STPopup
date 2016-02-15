@@ -57,8 +57,13 @@
             STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[PopupViewController1 new]];
 			popupController.positionY = self.topLayoutGuide.length;
 			popupController.containerView.layer.cornerRadius = 4;
-			popupController.backImage = [UIImage imageNamed:@"back"];
-			popupController.closeImage = [UIImage imageNamed:@"delete"];
+			UIImageView * image  = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"delete"]];
+			image.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+			image.layer.cornerRadius = 14;
+			image.contentMode = UIViewContentModeCenter;
+			image.frame = CGRectMake(8, 8, 28, 28);
+			
+			[popupController.rightContainerView addSubview:image];
 			popupController.navigationBarHidden = YES;
 			popupController.style = STPopupStyleFormSheetOuterNavigation;
             if (NSClassFromString(@"UIBlurEffect")) {

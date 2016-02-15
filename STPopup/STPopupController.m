@@ -100,8 +100,6 @@ static NSMutableSet *_retainedPopupControllers;
 @implementation STPopupController
 {
 	STPopupContainerViewController *_containerViewController;
-	UIButton * _backButton;
-	UIButton * _closeButton;
 	NSMutableArray *_viewControllers; // <UIViewController>
 	UIView *_contentView;
 	UILabel *_defaultTitleLabel;
@@ -452,47 +450,98 @@ static NSMutableSet *_retainedPopupControllers;
 	[_defaultLeftBarItem setType:_viewControllers.count > 1 ? STPopupLeftBarItemArrow : STPopupLeftBarItemCross animated:animated];
 	
 	if (self.style == STPopupStyleFormSheetOuterNavigation) {
-		if (_viewControllers.count == 1) {
-			
-			[_containerViewController.view addSubview:_closeButton];
-			_closeButton.center = CGPointMake(_closeButton.center.x, _defaultTitleLabel.center.y);
-			_closeButton.alpha = 0;
-			_closeButton.hidden = NO;
-			
-			[UIView animateWithDuration:.2 animations:^{
-				_closeButton.alpha = 1;
-				_backButton.alpha = 0;
-			} completion:^(BOOL finished) {
-				[_backButton removeFromSuperview];
-			}];
-			
-			return;
-		} else  if (_viewControllers.count > 1 && !_backButton.superview){
-			
-			[_containerViewController.view addSubview:_backButton];
-			_backButton.center = CGPointMake(_backButton.center.x, _defaultTitleLabel.center.y);
-			_backButton.alpha = 0;
-			_backButton.hidden = NO;
-			
-			[UIView animateWithDuration:.2 animations:^{
-				_backButton.alpha = 1;
-				_closeButton.alpha = 0;
-			} completion:^(BOOL finished) {
-				[_closeButton removeFromSuperview];
-			}];
-		}
+		
+//		if (_rightContainerView.subviews.count > 0 && !_rightContainerView.superview) {
+//			[_containerViewController.view addSubview:_rightContainerView];
+//			_rightContainerView.center = CGPointMake(_rightContainerView.center.x, _defaultTitleLabel.center.y);
+//			_rightContainerView.alpha = 0;
+//			_rightContainerView.hidden = NO;
+//			
+//			[UIView animateWithDuration:.2 animations:^{
+//				_rightContainerView.alpha = 1;
+//			}];
+//			
+//		} else if (_rightContainerView.subviews.count == 0) {
+//			[self hideRightView];
+//		}
+//		
+//		if (_leftContainerView.subviews.count > 0 && !_leftContainerView.superview) {
+//			[_containerViewController.view addSubview:_leftContainerView];
+//			_leftContainerView.center = CGPointMake(_leftContainerView.center.x, _defaultTitleLabel.center.y);
+//			_leftContainerView.alpha = 0;
+//			_leftContainerView.hidden = NO;
+//			
+//			[UIView animateWithDuration:.2 animations:^{
+//				_leftContainerView.alpha = 1;
+//			}];
+//		} else if (_leftContainerView.subviews.count == 0) {
+//			[self hideLeftView];
+//		}
 	}
 }
 
--(void) setBackImage:(UIImage *)backImage
-{
-	[_backButton setImage:backImage forState:UIControlStateNormal];
-}
 
--(void) setCloseImage:(UIImage *)closeImage
-{
-	[_closeButton setImage:closeImage forState:UIControlStateNormal];
-}
+//-(void) hideLeftView {
+//	[UIView animateWithDuration:.2 animations:^{
+//		_leftContainerView.alpha = 0;
+//	} completion:^(BOOL finished) {
+//		[_leftContainerView removeFromSuperview];
+//	}];
+//}
+//
+//-(void) hideRightView {
+//	[UIView animateWithDuration:.2 animations:^{
+//		_rightContainerView.alpha = 0;
+//	} completion:^(BOOL finished) {
+//		[_rightContainerView removeFromSuperview];
+//	}];
+//}
+//
+//-(void) setLeftView:(UIView *)leftView
+//{
+//	for (UIView * view in _leftContainerView.subviews) {
+//		[UIView animateWithDuration:.2 animations:^{
+//			view.alpha = 0;
+//		} completion:^(BOOL finished) {
+//			[view removeFromSuperview];
+//		}];
+//	}
+//	
+//	if (leftView) {
+//		leftView.alpha = 0;
+//		leftView.center = _leftContainerView.center;
+//		[_leftContainerView addSubview:leftView];
+//		
+//		[UIView animateWithDuration:.2 animations:^{
+//			leftView.alpha = 1;
+//		}];
+//	} else {
+//		[self hideLeftView];
+//	}
+//}
+
+//-(void) setRightView:(UIView *)rightView
+//{
+//	for (UIView * view in _rightContainerView.subviews) {
+//		[UIView animateWithDuration:.2 animations:^{
+//			view.alpha = 0;
+//		} completion:^(BOOL finished) {
+//			[view removeFromSuperview];
+//		}];
+//	}
+//	
+//	if (rightView) {
+//		rightView.alpha = 0;
+//		rightView.center = _rightContainerView.center;
+//		[_rightContainerView addSubview:rightView];
+//		
+//		[UIView animateWithDuration:.2 animations:^{
+//			rightView.alpha = 1;
+//		}];
+//	} else {
+//		[self hideRightView];
+//	}
+//}
 
 -(void) setStyle:(STPopupStyle)style
 {
@@ -611,17 +660,15 @@ static NSMutableSet *_retainedPopupControllers;
 
 -(void)setupOuterNavButtons
 {
-	_backButton = [UIButton new];
-	_backButton.frame = CGRectMake(0, 0, 44, 44);
-	_backButton.hidden = YES;
-	_backButton.backgroundColor = [UIColor clearColor];
-	[_backButton addTarget:self action:@selector(popFromButton) forControlEvents:UIControlEventTouchUpInside] ;
+	_leftContainerView = [UIView new];
+	_leftContainerView.frame = CGRectMake(0, 20, 44, 44);
+	_leftContainerView.backgroundColor = [UIColor clearColor];
+	[_containerViewController.view addSubview:_leftContainerView];
 	
-	_closeButton = [UIButton new];
-	_closeButton.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 44, 0, 44, 44);
-	_closeButton.hidden = YES;
-	_closeButton.backgroundColor = [UIColor clearColor];
-	[_closeButton addTarget:self action:@selector(popFromButton) forControlEvents:UIControlEventTouchUpInside] ;
+	_rightContainerView = [UIView new];
+	_rightContainerView.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 44, 20, 44, 44);
+	_rightContainerView.backgroundColor = [UIColor clearColor];
+	[_containerViewController.view addSubview:_rightContainerView];
 }
 
 - (void)setupBackgroundView

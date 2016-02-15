@@ -88,12 +88,12 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
 /**
  Back image for style Outer Navigation
  */
-@property(nonatomic) UIImage * backImage;
+@property(nonatomic) UIView * leftContainerView;
 
 /**
  Back image for style Outer Navigation
  */
-@property(nonatomic) UIImage * closeImage;
+@property(nonatomic) UIView * rightContainerView;
 
 /**
  Indicates if the popup is current presented.
