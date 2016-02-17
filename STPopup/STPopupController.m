@@ -450,98 +450,11 @@ static NSMutableSet *_retainedPopupControllers;
 	[_defaultLeftBarItem setType:_viewControllers.count > 1 ? STPopupLeftBarItemArrow : STPopupLeftBarItemCross animated:animated];
 	
 	if (self.style == STPopupStyleFormSheetOuterNavigation) {
-		
-//		if (_rightContainerView.subviews.count > 0 && !_rightContainerView.superview) {
-//			[_containerViewController.view addSubview:_rightContainerView];
-//			_rightContainerView.center = CGPointMake(_rightContainerView.center.x, _defaultTitleLabel.center.y);
-//			_rightContainerView.alpha = 0;
-//			_rightContainerView.hidden = NO;
-//			
-//			[UIView animateWithDuration:.2 animations:^{
-//				_rightContainerView.alpha = 1;
-//			}];
-//			
-//		} else if (_rightContainerView.subviews.count == 0) {
-//			[self hideRightView];
-//		}
-//		
-//		if (_leftContainerView.subviews.count > 0 && !_leftContainerView.superview) {
-//			[_containerViewController.view addSubview:_leftContainerView];
-//			_leftContainerView.center = CGPointMake(_leftContainerView.center.x, _defaultTitleLabel.center.y);
-//			_leftContainerView.alpha = 0;
-//			_leftContainerView.hidden = NO;
-//			
-//			[UIView animateWithDuration:.2 animations:^{
-//				_leftContainerView.alpha = 1;
-//			}];
-//		} else if (_leftContainerView.subviews.count == 0) {
-//			[self hideLeftView];
-//		}
+		_rightContainerView.center = CGPointMake(_rightContainerView.center.x, _defaultTitleLabel.center.y);
+		_leftContainerView.center = CGPointMake(_leftContainerView.center.x, _defaultTitleLabel.center.y);
 	}
 }
 
-
-//-(void) hideLeftView {
-//	[UIView animateWithDuration:.2 animations:^{
-//		_leftContainerView.alpha = 0;
-//	} completion:^(BOOL finished) {
-//		[_leftContainerView removeFromSuperview];
-//	}];
-//}
-//
-//-(void) hideRightView {
-//	[UIView animateWithDuration:.2 animations:^{
-//		_rightContainerView.alpha = 0;
-//	} completion:^(BOOL finished) {
-//		[_rightContainerView removeFromSuperview];
-//	}];
-//}
-//
-//-(void) setLeftView:(UIView *)leftView
-//{
-//	for (UIView * view in _leftContainerView.subviews) {
-//		[UIView animateWithDuration:.2 animations:^{
-//			view.alpha = 0;
-//		} completion:^(BOOL finished) {
-//			[view removeFromSuperview];
-//		}];
-//	}
-//	
-//	if (leftView) {
-//		leftView.alpha = 0;
-//		leftView.center = _leftContainerView.center;
-//		[_leftContainerView addSubview:leftView];
-//		
-//		[UIView animateWithDuration:.2 animations:^{
-//			leftView.alpha = 1;
-//		}];
-//	} else {
-//		[self hideLeftView];
-//	}
-//}
-
-//-(void) setRightView:(UIView *)rightView
-//{
-//	for (UIView * view in _rightContainerView.subviews) {
-//		[UIView animateWithDuration:.2 animations:^{
-//			view.alpha = 0;
-//		} completion:^(BOOL finished) {
-//			[view removeFromSuperview];
-//		}];
-//	}
-//	
-//	if (rightView) {
-//		rightView.alpha = 0;
-//		rightView.center = _rightContainerView.center;
-//		[_rightContainerView addSubview:rightView];
-//		
-//		[UIView animateWithDuration:.2 animations:^{
-//			rightView.alpha = 1;
-//		}];
-//	} else {
-//		[self hideRightView];
-//	}
-//}
 
 -(void) setStyle:(STPopupStyle)style
 {
@@ -651,22 +564,22 @@ static NSMutableSet *_retainedPopupControllers;
 	_containerViewController.modalPresentationStyle = UIModalPresentationCustom;
 	_containerViewController.transitioningDelegate = self;
 	
-	[self setupOuterNavButtons];
 	[self setupBackgroundView];
 	[self setupContainerView];
 	[self setupNavigationBar];
+	[self setupOuterNavButtons];
 }
 
 
 -(void)setupOuterNavButtons
 {
-	_leftContainerView = [UIView new];
-	_leftContainerView.frame = CGRectMake(0, 20, 44, 44);
+	_leftContainerView = [UIControl new];
+	_leftContainerView.frame = CGRectMake(0, 0, 44, 44);
 	_leftContainerView.backgroundColor = [UIColor clearColor];
 	[_containerViewController.view addSubview:_leftContainerView];
 	
-	_rightContainerView = [UIView new];
-	_rightContainerView.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 44, 20, 44, 44);
+	_rightContainerView = [UIControl new];
+	_rightContainerView.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 44, 0, 44, 44);
 	_rightContainerView.backgroundColor = [UIColor clearColor];
 	[_containerViewController.view addSubview:_rightContainerView];
 }
@@ -966,6 +879,8 @@ static NSMutableSet *_retainedPopupControllers;
 		_containerView.userInteractionEnabled = NO;
 		[UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
 			_backgroundView.alpha = 0;
+			_leftContainerView.alpha = 0;
+			_rightContainerView.alpha = 0;
 			switch (self.transitionStyle) {
 				case STPopupTransitionStyleFade: {
 					_containerView.alpha = 0;
